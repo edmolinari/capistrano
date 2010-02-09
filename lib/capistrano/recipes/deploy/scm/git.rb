@@ -126,6 +126,10 @@ module Capistrano
         def origin
           variable(:remote) || 'origin'
         end
+        
+        def branch
+          variable(:branch) || "deploy"
+        end
 
         # Performs a clone on the remote machine, then checkout on the branch
         # you want to deploy.
@@ -147,7 +151,7 @@ module Capistrano
           end
 
           # checkout into a local branch rather than a detached HEAD
-          execute << "cd #{destination} && #{git} checkout #{verbose} -b deploy #{revision}"
+          execute << "cd #{destination} && #{git} checkout #{verbose} -b #{self.branch} #{revision}"
           
           if variable(:git_enable_submodules)
             execute << "#{git} submodule #{verbose} init"
